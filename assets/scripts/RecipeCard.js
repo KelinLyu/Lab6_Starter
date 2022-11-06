@@ -97,8 +97,8 @@ class RecipeCard extends HTMLElement {
     `;
 
     // A5. TODO - Append the <style> and <article> elements to the Shadow DOM
-    shadow.appendChild(article_element);
     shadow.appendChild(style_element);
+    shadow.appendChild(article_element);
   }
 
   /**
@@ -127,16 +127,60 @@ class RecipeCard extends HTMLElement {
     if (!data) return;
 
     // A6. Select the <article> we added to the Shadow DOM in the constructor
-    const article_element = this.getElementsByClassName("article")[0];
-    console.log(this);
+    const article_element = this.shadowRoot.querySelector("article");
 
-    // A7. TODO - Set the contents of the <article> with the <article> template given in
+    // A7. Set the contents of the <article> with the <article> template given in
     //           cardTemplate.html and the data passed in (You should only have one <article>,
     //           do not nest an <article> inside another <article>). You should use Template
     //           literals (tempalte strings) and element.innerHTML for this.
+    const image_element = document.createElement("img");
+    image_element.setAttribute("src", data["imgSrc"]);
+    image_element.setAttribute("alt", data["imgAlt"]);
+    article_element.appendChild(image_element);
+
+    const title_p_element = document.createElement("p");
+    title_p_element.setAttribute("class", "title");
+    article_element.appendChild(title_p_element);
+
+    const title_a_element = document.createElement("a");
+    title_a_element.setAttribute("href", data["titleLnk"]);
+    title_a_element.textContent = data["titleTxt"];
+    title_p_element.appendChild(title_a_element);
+
+    const organization_element = document.createElement("p");
+    organization_element.setAttribute("class", "organization");
+    organization_element.textContent = data["organization"];
+    article_element.appendChild(organization_element);
+
+    const div_element = document.createElement("div");
+    div_element.setAttribute("class", "rating");
+    article_element.appendChild(div_element);
+
+    const top_span_element = document.createElement("span");
+    top_span_element.textContent = "" + data["rating"];
+    div_element.appendChild(top_span_element);
+
+    const middle_image_element = document.createElement("img");
+    middle_image_element.setAttribute("src", "/assets/images/icons/" + data["rating"] + "-star.svg");
+    middle_image_element.setAttribute("alt", "" + data["rating"] + " stars");
+    div_element.appendChild(middle_image_element);
+
+    const bot_span_element = document.createElement("span");
+    bot_span_element.textContent = "(" + data["numRatings"] + ")";
+    div_element.appendChild(bot_span_element);
+
+    const time_element = document.createElement("time");
+    time_element.textContent = "" + data["lengthTime"] + " min";
+    article_element.appendChild(time_element);
+
+    const ingredients_element = document.createElement("p");
+    ingredients_element.setAttribute("class", "ingredients");
+    ingredients_element.textContent = data["ingredients"];
+    article_element.appendChild(ingredients_element);
+
   }
 }
 
-// A8. TODO - Define the Class as a customElement so that you can create
+// A8. Define the Class as a customElement so that you can create
 //           'recipe-card' elements
 customElements.define("recipe-card", RecipeCard);

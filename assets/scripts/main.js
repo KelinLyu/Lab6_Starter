@@ -59,9 +59,10 @@ function addRecipesToDocument(recipes) {
  */
 function saveRecipesToStorage(recipes) {
   // EXPLORE - START (All explore numbers start with B)
-  // B1. TODO - Complete the functionality as described in this function
+  // B1. Complete the functionality as described in this function
   //            header. It is possible in only a single line, but should
   //            be no more than a few lines.
+  window.localStorage.setItem("recipes", JSON.stringify(recipes));
 }
 
 /**
@@ -70,27 +71,65 @@ function saveRecipesToStorage(recipes) {
  */
 function initFormHandler() {
 
-  // B2. TODO - Get a reference to the <form> element
-  
-  // B3. TODO - Add an event listener for the 'submit' event, which fires when the
+  // B2. Get a reference to the <form> element
+  const form_element = document.getElementById("new-recipe");
+
+  // B3. Add an event listener for the 'submit' event, which fires when the
   //            submit button is clicked
+  document.querySelectorAll("button")[0].addEventListener("click", function() {
+    var rating;
+    try {
+      rating = Number(form_element.querySelector('input[name="rating"]:checked').value);
+    } catch (error) {
+      rating = 0;
+    }
+    const recipe_object = {
+      "imgSrc": form_element.querySelector("#imgSrc").value,
+      "imgAlt": form_element.querySelector("#imgAlt").value,
+      "titleLnk": form_element.querySelector("#titleLnk").value,
+      "titleTxt": form_element.querySelector("#titleTxt").value,
+      "organization": form_element.querySelector("#organization").value,
+      "rating": rating,
+      "numRatings": Number(form_element.querySelector("#numRatings").value),
+      "lengthTime": form_element.querySelector("#lengthTime").value,
+      "ingredients": form_element.querySelector("#ingredients").value
+    }
+
+    let recipe_card = document.createElement("recipe-card");
+    recipe_card.data = recipe_object;
+
+    document.getElementsByTagName("main")[0].appendChild(recipe_card);
+
+    var array = [];
+    if (window.localStorage.getItem("recipes") != null) {
+      array = JSON.parse(window.localStorage.getItem("recipes"));
+    }
+    array.push(recipe_object);
+
+    saveRecipesToStorage(array);
+
+  }, false);
 
   // Steps B4-B9 will occur inside the event listener from step B3
-  // B4. TODO - Create a new FormData object from the <form> element reference above
-  // B5. TODO - Create an empty object (I'll refer to this object as recipeObject to
+  // B4. Create a new FormData object from the <form> element reference above
+  // B5. Create an empty object (I'll refer to this object as recipeObject to
   //            make this easier to read), and then extract the keys and corresponding
   //            values from the FormData object and insert them into recipeObject
-  // B6. TODO - Create a new <recipe-card> element
-  // B7. TODO - Add the recipeObject data to <recipe-card> using element.data
-  // B8. TODO - Append this new <recipe-card> to <main>
-  // B9. TODO - Get the recipes array from localStorage, add this new recipe to it, and
+  // B6. Create a new <recipe-card> element
+  // B7. Add the recipeObject data to <recipe-card> using element.data
+  // B8. Append this new <recipe-card> to <main>
+  // B9. Get the recipes array from localStorage, add this new recipe to it, and
   //            then save the recipes array back to localStorage
 
-  // B10. TODO - Get a reference to the "Clear Local Storage" button
-  // B11. TODO - Add a click event listener to clear local storage button
+  // B10. Get a reference to the "Clear Local Storage" button
+  // B11. Add a click event listener to clear local storage button
+  document.querySelectorAll("button")[1].addEventListener("click", function() {
+    window.localStorage.clear();
+    document.getElementsByTagName("main")[0].innerHTML = "";
+  }, false);
   
   // Steps B12 & B13 will occur inside the event listener from step B11
-  // B12. TODO - Clear the local storage
-  // B13. TODO - Delete the contents of <main>
+  // B12. Clear the local storage
+  // B13. Delete the contents of <main>
 
 }
