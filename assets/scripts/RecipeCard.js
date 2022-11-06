@@ -161,7 +161,7 @@ class RecipeCard extends HTMLElement {
     div_element.appendChild(top_span_element);
 
     const middle_image_element = document.createElement("img");
-    middle_image_element.setAttribute("src", "/assets/images/icons/" + data["rating"] + "-star.svg");
+    middle_image_element.setAttribute("src", "./assets/images/icons/" + data["rating"] + "-star.svg");
     middle_image_element.setAttribute("alt", "" + data["rating"] + " stars");
     div_element.appendChild(middle_image_element);
 
